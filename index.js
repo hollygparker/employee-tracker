@@ -55,7 +55,7 @@ console.log(
             } else if (response.mainMenu === 'Add new employee') {
                 addEmployee();
             } else if (response.mainMenu === 'Update an existing employee role') {
-                allRoles();
+                updateRole();
             } 
         })
 
@@ -182,6 +182,30 @@ function allDepartments() {
         })
     };
 
-    
+    function updateRole() {
+        var updateRoleQuestions = [
+            {
+                type: 'input',
+                name: 'whatEmployee',
+                message: 'Please enter employee ID to update their role.'
+            },
+            {
+                type: 'input',
+                name: 'newRole',
+                message: 'Please assign new role ID to selected employee.'
+            },
+        ]
 
-  }
+        inquirer.prompt(updateRoleQuestions)
+            .then((response) => {
+                connection.query('UPDATE employee SET role_id = ? WHERE id = ?',
+                [response.newRole, response.whatEmployee],
+                function (err, result) {
+                    if (err) { console.log(err) }
+                    console.table(result)
+                    showEmployees();
+                })
+            })
+    }
+
+  };
