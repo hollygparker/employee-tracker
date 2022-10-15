@@ -164,6 +164,24 @@ function allDepartments() {
                 message: 'Please enter the manager ID.'
             },
         ]
-    }
+
+        inquirer.prompt(employeeQuestions)
+        .then((response) => {
+            connection.query('INSERT INTO employee SET ?;',
+            {
+                first_name: response.firstName,
+                last_name: response.lastName,
+                role_id: response.employeeRole,
+                manager_id: response.employeeManager
+            },
+            function (err, result) {
+                if (err) { console.log(err) }
+                console.table(result)
+                showEmployees();
+            })
+        })
+    };
+
+    
 
   }
